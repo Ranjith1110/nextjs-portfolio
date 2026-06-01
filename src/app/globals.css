@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@theme {
+  --font-nunito: var(--font-nunito), sans-serif;
+  --font-fraunces: var(--font-fraunces), serif;
+}
+
+body {
+  @apply bg-gray-50 text-gray-900;
+}
