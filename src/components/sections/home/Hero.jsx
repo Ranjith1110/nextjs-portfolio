@@ -34,11 +34,11 @@ export default function Hero() {
 
     return (
         <section ref={heroRef} className="min-h-[90vh] px-2 py-10 flex flex-col justify-center overflow-hidden">
-            <div className="max-w-[1400px] bg-[#faf4e6] mx-auto px-3 py-6 md:px-8 md:py-10 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-4">
+            <div className="max-w-7xl bg-[#faf4e6] mx-auto px-3 pt-12 pb-6 md:px-8 w-full grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-4">
 
                 <div className="lg:col-span-8 flex flex-col justify-center relative">
 
-                    <h1 className="font-fraunces text-[48px] leading-[1] lg:text-[78px] tracking-tight text-[#111111]">
+                    <h1 className="font-fraunces text-[48px] leading-[1] lg:text-[70px] tracking-tight text-[#111111]">
                         <div className="overflow-hidden pb-1 lg:pb-2">
                             <div ref={(el) => (textRefs.current[1] = el)}>
                                 Hi, There!
@@ -52,11 +52,6 @@ export default function Hero() {
                         <div className="overflow-hidden pb-1 lg:pb-2">
                             <div ref={(el) => (textRefs.current[3] = el)}>
                                 I'm a <span className="italic text-[#8a1c1c]">Software Developer</span>
-                            </div>
-                        </div>
-                        <div className="overflow-hidden pb-2 lg:pb-4">
-                            <div ref={(el) => (textRefs.current[4] = el)}>
-                                and a Video Editor.
                             </div>
                         </div>
                     </h1>
@@ -90,7 +85,7 @@ export default function Hero() {
                             <div className="text-[0.65rem] font-bold tracking-[0.2em] text-gray-400 mt-1">ROLE</div>
                             <div>
                                 <div className="font-fraunces text-lg sm:text-xl font-bold text-gray-900 leading-tight italic">Ranjith</div>
-                                <div className="text-[0.65rem] sm:text-xs font-bold tracking-[0.1em] text-gray-500 mt-1 uppercase">Software Devoloper & Video Editor.</div>
+                                <div className="text-[0.65rem] sm:text-xs font-bold tracking-[0.1em] text-gray-500 mt-1 uppercase">Software Devoloper.</div>
                             </div>
                         </div>
 
@@ -113,7 +108,7 @@ export default function Hero() {
                         <div ref={(el) => (statsRefs.current[3] = el)} className="grid grid-cols-[80px_1fr] sm:grid-cols-[100px_1fr] items-start border-t border-gray-200 pt-6">
                             <div className="text-[0.65rem] font-bold tracking-[0.2em] text-gray-400 mt-1">STACK</div>
                             <div>
-                                <div className="font-fraunces text-lg sm:text-xl font-bold text-[#8a1c1c] italic">JavaScript, MERN</div>
+                                <div className="font-fraunces text-lg sm:text-xl font-bold text-[#8a1c1c] italic">JavaScript, TypeScript, MERN</div>
                                 <div className="text-[0.65rem] sm:text-xs font-bold tracking-[0.1em] text-gray-500 mt-1 uppercase">React js, Next js, GSAP & Tailwind.</div>
                             </div>
                         </div>

@@ -17,9 +17,10 @@ export default function Navbar() {
 
     const navLinks = [
         { name: "About", href: "/about" },
+        { name: "Experience", href: "/experience" },
+        { name: "Skills", href: "/skills" },
         { name: "Projects", href: "/projects" },
-        { name: "Services", href: "/services" },
-        { name: "My Setup", href: "/setup" },
+        { name: "Contact", href: "/contact" },
     ];
 
     useEffect(() => {
@@ -55,13 +56,15 @@ export default function Navbar() {
             <div className="w-full bg-[#111111] border-b border-black flex items-center overflow-hidden h-9">
                 <div className="bg-[#8a1c1c] text-[#e8dcb8] px-2 md:px-6 h-full flex items-center text-xs font-bold tracking-widest z-10 shrink-0 shadow-[4px_0_10px_rgba(0,0,0,0.5)]">
                     <span className="w-2.5 h-2.5 rounded-full bg-[#d6a54a] mr-1 md:mr-3 animate-pulse"></span>
-                    AVAILABLE FOR FREELANCE
+                    AVAILABLE FOR WORK
                 </div>
 
                 <div className="flex whitespace-nowrap text-[#a3a3a3] text-xs font-semibold tracking-wider" ref={marqueeRef}>
                     {[...Array(2)].map((_, i) => (
                         <div key={i} className="flex items-center font-fraunces italic text-[10px]">
-                            <span className="mx-4 text-[#d6a54a]">♦</span> FRONTEND WEB DEVELOPER
+                            <span className="mx-4 text-[#d6a54a]">♦</span> FULL STACK DEVELOPER
+                            <span className="mx-4 text-[#d6a54a]">♦</span> MERN STACK DEVELOPER
+                            <span className="mx-4 text-[#d6a54a]">♦</span> FRONTEND DEVELOPER
                             <span className="mx-4 text-[#d6a54a]">♦</span> GSAP ANIMATION MAGIC
                             <span className="mx-4 text-[#d6a54a]">♦</span> NEXT.JS EXPERT
                             <span className="mx-4 text-[#d6a54a]">♦</span> REACT & TAILWIND
@@ -72,7 +75,7 @@ export default function Navbar() {
             </div>
 
             <nav className="w-full bg-[#fcfcf9]">
-                <div className="max-w-[1400px] mx-auto px-2 sm:px-6">
+                <div className="max-w-7xl mx-auto px-1">
                     <div className="flex justify-between items-center h-14">
 
                         <div>
