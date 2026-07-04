@@ -2,11 +2,15 @@
 
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import gsap from "gsap";
 import Button from "@/components/ui/Button";
 
 export default function Navbar() {
     const [isOpen, setIsOpen] = useState(false);
+    const [activeLink, setActiveLink] = useState("");
+    const pathname = usePathname();
+
     const navRef = useRef(null);
     const marqueeRef = useRef(null);
     const linksRef = useRef([]);
@@ -22,6 +26,65 @@ export default function Navbar() {
         { name: "Projects", href: "/projects" },
         { name: "Contact", href: "/contact" },
     ];
+
+    const getSectionName = (sec, index) => {
+        if (index === 0) return "About";
+        const text = sec.textContent.toLowerCase();
+        if (text.includes("where i've worked")) return "Experience";
+        if (text.includes("what i work with")) return "Skills";
+        if (text.includes("featured projects") || text.includes("my work")) return "Projects";
+        if (text.includes("get in touch")) return "Contact";
+
+        if (index === 1) return "Experience";
+        if (index === 2) return "Skills";
+        if (index === 3) return "Projects";
+        if (index === 4) return "Contact";
+        return "";
+    };
+
+    const scrollToSection = (e, name) => {
+        if (pathname === "/") {
+            e.preventDefault();
+
+            if (name === "About") {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                setActiveLink("About");
+                setIsOpen(false);
+                return;
+            }
+
+            const sections = Array.from(document.querySelectorAll("section"));
+            const targetSection = sections.find((sec, index) => getSectionName(sec, index) === name);
+
+            if (targetSection) {
+                const yOffset = -70;
+                const y = targetSection.getBoundingClientRect().top + window.scrollY + yOffset;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+                setActiveLink(name);
+            }
+
+            setIsOpen(false);
+        }
+    };
+
+    useEffect(() => {
+        if (pathname !== "/") return;
+
+        const sections = Array.from(document.querySelectorAll("section"));
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const index = sections.indexOf(entry.target);
+                    const name = getSectionName(entry.target, index);
+                    if (name) setActiveLink(name);
+                }
+            });
+        }, { rootMargin: "-80px 0px -60% 0px" });
+
+        sections.forEach(sec => observer.observe(sec));
+        return () => observer.disconnect();
+    }, [pathname]);
 
     useEffect(() => {
         gsap.to(marqueeRef.current, {
@@ -79,34 +142,56 @@ export default function Navbar() {
                     <div className="flex justify-between items-center h-14">
 
                         <div>
-                            <Link href="/" className="text-2xl font-bold text-gray-900 tracking-tight font-fraunces italic">
+                            <Link
+                                href="/"
+                                onClick={(e) => {
+                                    if (pathname === "/") {
+                                        e.preventDefault();
+                                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                                        setActiveLink("About");
+                                    }
+                                }}
+                                className="text-2xl font-bold text-gray-900 tracking-tight font-fraunces italic pl-2"
+                            >
                                 Ranjith's Portfolio
                             </Link>
                         </div>
 
                         <div className="hidden lg:flex items-center gap-1">
-                            <div className="flex space-x-2">
+                            <div className="flex space-x-2 mr-2">
                                 {navLinks.map((link, index) => (
                                     <Link
                                         key={link.name}
                                         href={link.href}
+                                        onClick={(e) => scrollToSection(e, link.name)}
                                         ref={(el) => (linksRef.current[index] = el)}
-                                        className="group relative text-[#5c687d] hover:text-gray-900 px-1 py-2 text-base font-medium transition-colors"
+                                        className={`group relative px-2 py-2 text-base transition-colors ${activeLink === link.name
+                                            ? "text-[#111111] font-bold"
+                                            : "text-[#5c687d] font-medium hover:text-[#111111]"
+                                            }`}
                                     >
                                         {link.name}
-                                        <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-[#8a1c1c] transition-all duration-300 group-hover:w-full"></span>
+                                        <span className={`absolute left-0 bottom-0 h-[2px] bg-[#8a1c1c] transition-all duration-300 ${activeLink === link.name ? "w-full" : "w-0 group-hover:w-full"
+                                            }`}></span>
                                     </Link>
                                 ))}
                             </div>
 
-                            <div className="border-l border-gray-400 pl-2">
-                                <Button href="/resume" variant="primary" size="sm">
+                            <div className="border-l border-gray-400 pl-3">
+                                <Button
+                                    href="/ranjith_cv.pdf"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    download="Ranjith_CV.pdf"
+                                    variant="primary"
+                                    size="sm"
+                                >
                                     Resume
                                 </Button>
                             </div>
                         </div>
 
-                        <div className="lg:hidden flex items-center">
+                        <div className="lg:hidden flex items-center pr-2">
                             <button
                                 onClick={toggleMenu}
                                 className="inline-flex items-center justify-center p-2 rounded-md text-gray-800 hover:bg-gray-200 focus:outline-none transition-colors"
@@ -128,20 +213,30 @@ export default function Navbar() {
                 </div>
 
                 {isOpen && (
-                    <div className="lg:hidden bg-[#fcfcf9] border-t border-gray-200 shadow-xl">
+                    <div className="lg:hidden bg-[#fcfcf9] border-t border-gray-200 shadow-xl absolute w-full">
                         <div className="px-4 pt-2 pb-6 space-y-2">
                             {navLinks.map((link) => (
                                 <Link
                                     key={link.name}
                                     href={link.href}
-                                    onClick={() => setIsOpen(false)}
-                                    className="block px-3 py-3 rounded-md text-base font-semibold text-gray-700 hover:text-[#8a1c1c] hover:bg-red-50"
+                                    onClick={(e) => scrollToSection(e, link.name)}
+                                    className={`block px-3 py-3 rounded-md text-base font-semibold transition-colors ${activeLink === link.name
+                                        ? "text-[#8a1c1c] bg-red-50"
+                                        : "text-gray-700 hover:text-[#8a1c1c] hover:bg-red-50"
+                                        }`}
                                 >
                                     {link.name}
                                 </Link>
                             ))}
                             <div className="pt-4 flex flex-col gap-3">
-                                <Button href="/resume" variant="primary">
+                                <Button
+                                    href="/ranjith_cv.pdf"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    download="Ranjith_CV.pdf"
+                                    variant="primary"
+                                    className="w-full"
+                                >
                                     Resume
                                 </Button>
                             </div>
